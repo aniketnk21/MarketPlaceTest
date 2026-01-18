@@ -1,19 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Filter, Grid, List } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image: string;
-  stock: number;
-  brand: string;
-  created: string;
-  updated: string;
-}
+import type { Product } from '../types';
+import { getProducts } from '../lib/pocketbase';
 
 export const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -23,83 +12,12 @@ export const ProductsPage = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   useEffect(() => {
-    // Mock data - replace with actual PocketBase fetch
-    const mockProducts: Product[] = [
-      {
-        id: '1',
-        name: 'Gaming Mechanical Keyboard',
-        description: 'RGB backlit mechanical keyboard with Cherry MX switches for ultimate gaming experience',
-        price: 129.99,
-        category: 'keyboards',
-        image: '/api/placeholder/300/300',
-        stock: 15,
-        brand: 'TechPro',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      },
-      {
-        id: '2',
-        name: 'Wireless Gaming Mouse',
-        description: 'High-precision wireless gaming mouse with RGB lighting and customizable buttons',
-        price: 79.99,
-        category: 'mice',
-        image: '/api/placeholder/300/300',
-        stock: 25,
-        brand: 'GameMax',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      },
-      {
-        id: '3',
-        name: '27" 4K Gaming Monitor',
-        description: '4K UHD gaming monitor with 144Hz refresh rate and HDR support',
-        price: 399.99,
-        category: 'monitors',
-        image: '/api/placeholder/300/300',
-        stock: 8,
-        brand: 'ViewTech',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      },
-      {
-        id: '4',
-        name: '1TB NVMe SSD',
-        description: 'High-speed NVMe SSD for faster boot and load times with 5-year warranty',
-        price: 149.99,
-        category: 'storage',
-        image: '/api/placeholder/300/300',
-        stock: 20,
-        brand: 'SpeedDrive',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      },
-      {
-        id: '5',
-        name: 'USB-C Hub',
-        description: '7-in-1 USB-C hub with HDMI, USB 3.0, and SD card reader',
-        price: 49.99,
-        category: 'accessories',
-        image: '/api/placeholder/300/300',
-        stock: 30,
-        brand: 'ConnectPro',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      },
-      {
-        id: '6',
-        name: 'Webcam HD 1080p',
-        description: 'Full HD webcam with auto-focus and built-in microphone',
-        price: 89.99,
-        category: 'accessories',
-        image: '/api/placeholder/300/300',
-        stock: 12,
-        brand: 'ClearView',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      }
-    ];
-    setProducts(mockProducts);
-    setFilteredProducts(mockProducts);
+    const fetchProducts = async () => {
+      const fetchedProducts = await getProducts();
+      setProducts(fetchedProducts);
+      setFilteredProducts(fetchedProducts);
+    };
+    fetchProducts();
   }, []);
 
   useEffect(() => {

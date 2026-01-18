@@ -2,76 +2,18 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Cpu, HardDrive, Monitor, Mouse } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image: string;
-  stock: number;
-  brand: string;
-  created: string;
-  updated: string;
-}
+import type { Product } from '../types';
+import { getProducts } from '../lib/pocketbase';
 
 export const HomePage = () => {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    // Mock data for demonstration
-    const mockProducts: Product[] = [
-      {
-        id: '1',
-        name: 'Gaming Mechanical Keyboard',
-        description: 'RGB backlit mechanical keyboard with Cherry MX switches',
-        price: 129.99,
-        category: 'keyboards',
-        image: '/api/placeholder/300/300',
-        stock: 15,
-        brand: 'TechPro',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      },
-      {
-        id: '2',
-        name: 'Wireless Gaming Mouse',
-        description: 'High-precision wireless gaming mouse with RGB lighting',
-        price: 79.99,
-        category: 'mice',
-        image: '/api/placeholder/300/300',
-        stock: 25,
-        brand: 'GameMax',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      },
-      {
-        id: '3',
-        name: '27" 4K Gaming Monitor',
-        description: '4K UHD gaming monitor with 144Hz refresh rate',
-        price: 399.99,
-        category: 'monitors',
-        image: '/api/placeholder/300/300',
-        stock: 8,
-        brand: 'ViewTech',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      },
-      {
-        id: '4',
-        name: '1TB NVMe SSD',
-        description: 'High-speed NVMe SSD for faster boot and load times',
-        price: 149.99,
-        category: 'storage',
-        image: '/api/placeholder/300/300',
-        stock: 20,
-        brand: 'SpeedDrive',
-        created: new Date().toISOString(),
-        updated: new Date().toISOString()
-      }
-    ];
-    setFeaturedProducts(mockProducts);
+    const fetchProducts = async () => {
+      const products = await getProducts();
+      setFeaturedProducts(products.slice(0, 4));
+    };
+    fetchProducts();
   }, []);
 
   const categories = [

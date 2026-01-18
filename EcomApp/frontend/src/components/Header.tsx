@@ -20,8 +20,8 @@ export const Header = () => {
               <Link to="/products" className="text-gray-900 hover:text-primary-600 px-3 py-2 text-sm font-medium">
                 Products
               </Link>
-              <Link to="/categories" className="text-gray-900 hover:text-primary-600 px-3 py-2 text-sm font-medium">
-                Categories
+              <Link to="/admin" className="text-gray-900 hover:text-primary-600 px-3 py-2 text-sm font-medium">
+                Admin
               </Link>
             </nav>
           </div>
